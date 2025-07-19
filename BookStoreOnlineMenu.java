@@ -18,13 +18,14 @@ public class BookStoreOnlineMenu {
     // Display Menu
     private static void displayMenu() {
         System.out.println("Welcome to Bookstore Online");
-        System.out.println("1. Place order books");
-        System.out.println("2. Order tracking");
-        System.out.println("3. Searching order");
-        System.out.println("4. Add Book");
-        System.out.println("5. Remove Book");
-        System.out.println("6. Undo last order");
-        System.out.println("7. Exit");
+        System.out.println("1. Available Books ");
+        System.out.println("2. Place order books");
+        System.out.println("3. Order tracking");
+        System.out.println("4. Searching order");
+        System.out.println("5. Add Book");
+        System.out.println("6. Remove Book");
+        System.out.println("7. Undo last order");
+        System.out.println("8. Exit");
         System.out.println(" Enter your choice: ");
     }
 
@@ -130,11 +131,11 @@ public class BookStoreOnlineMenu {
 
     private static void searchOrder() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Sort By: ");
-        System.out.println("1. Sort by Order ID");
-        System.out.println("2. Sort by Name");
-        System.out.println("3. Sort by Address");
-        System.out.println("4. Sort by ISBN");
+        System.out.println("Search By: ");
+        System.out.println("1. Search by Order ID");
+        System.out.println("2. Search by Name");
+        System.out.println("3. Search by Address");
+        System.out.println("4. Search by ISBN");
         int choice = Integer.parseInt(scanner.nextLine());
 
         boolean found = false;
@@ -302,24 +303,27 @@ public class BookStoreOnlineMenu {
 
             switch (choice) {
                 case 1:
-                    placeOrder();
+                    arrayList.displayAllBooks();
                     break;
                 case 2:
-                    trackOrders();
+                    placeOrder();
                     break;
                 case 3:
-                    searchOrder();
+                    trackOrders();
                     break;
                 case 4:
-                    addBook();
+                    searchOrder();
                     break;
                 case 5:
-                    removeBook();
+                    addBook();
                     break;
                 case 6:
-                    undoLastOrder();
+                    removeBook();
                     break;
                 case 7:
+                    undoLastOrder();
+                    break;
+                case 8:
                     System.out.println(" Existing....... ");
                     return;
                 default:
@@ -328,3 +332,4 @@ public class BookStoreOnlineMenu {
         }
     }
 }
+

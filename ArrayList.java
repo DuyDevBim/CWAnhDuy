@@ -12,9 +12,16 @@ public class ArrayList implements AbstractArrayList<Book> {
     @Override
     public boolean add(Book item) {
         if (size == bookArray.length) {
-            resize();
+            int newSize = bookArray.length * 2;
+            Book[] newBooks = new Book[newSize];
+
+            for (int i = 0; i < bookArray.length; i++) {
+                newBooks[i] = bookArray[i];
+            }
+            bookArray = newBooks;
         }
-        bookArray[size++] = item;
+        bookArray[size] = item;
+        size++;
         return true;
     }
 
@@ -59,16 +66,6 @@ public class ArrayList implements AbstractArrayList<Book> {
     @Override
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    private void resize() {
-        int newSize = bookArray.length * 2;
-        Book[] newBooks = new Book[newSize];
-
-        for (int i = 0; i < bookArray.length; i++) {
-            newBooks[i] = bookArray[i];
-        }
-        bookArray = newBooks;
     }
 
     // Optional: in toàn bộ danh sách sách
