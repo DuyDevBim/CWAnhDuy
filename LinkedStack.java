@@ -1,6 +1,6 @@
 package CWAnhDuy;
 
-public class LinkedStack<E> implements AbstractStack<E> {
+public class LinkedStack<E> implements AbstractLinkedStack<E> {
     private class Node<E>{
         // attributes
         private E element;

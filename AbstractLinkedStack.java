@@ -1,6 +1,6 @@
 package CWAnhDuy;
 
-public interface AbstractStack<E> {
+public interface AbstractLinkedStack<E> {
     /**
      * Adds an element at the top of the stack and increases the size.
      *

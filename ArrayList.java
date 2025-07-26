@@ -1,77 +1,158 @@
 package CWAnhDuy;
 
-public class ArrayList implements AbstractArrayList<Book> {
-    private Book[] bookArray;
-    private int size;
+public class ArrayList<E> implements AbstractArrayList<E> {
+    // attributes
+    private E[] elements;
+    private int nextIndex;
 
+    // constructor
     public ArrayList() {
-        this.bookArray = new Book[10];
-        this.size = 0;
+        this.elements = (E[]) new Object[10];
+        this.nextIndex = 0;
     }
 
     @Override
-    public boolean add(Book item) {
-        if (size == bookArray.length) {
-            int newSize = bookArray.length * 2;
-            Book[] newBooks = new Book[newSize];
+    public boolean add ( E element ) {
+        if (nextIndex == elements.length) {
+            E[] largerElements = (E[]) new Object[elements.length * 2];
 
-            for (int i = 0; i < bookArray.length; i++) {
-                newBooks[i] = bookArray[i];
+            for ( int i = 0; i < elements.length; i++ ) {
+                largerElements[i] = elements[i];
             }
-            bookArray = newBooks;
+
+            elements = largerElements;
         }
-        bookArray[size] = item;
-        size++;
+
+        elements[nextIndex] = element;
+        nextIndex++;
         return true;
     }
 
     @Override
-    public Book get(int index) {
-        if (index < 0 || index >= size) {
+    public boolean add ( int index, E element ) {
+
+        if (index < 0 || index > nextIndex) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        return bookArray[index];
+
+        if (nextIndex == elements.length) {
+            E[] largerElements = (E[]) new Object[elements.length * 2];
+
+            for ( int i = 0; i < elements.length; i++ ) {
+                largerElements[i] = elements[i];
+            }
+
+            elements = largerElements;
+        }
+
+        // shift elements to the right
+        for ( int i = nextIndex; i > index; i-- ) {
+            elements[i] = elements[i - 1];
+        }
+
+        elements[index] = element;
+        nextIndex++;
+
+        return true;
     }
 
     @Override
-    public boolean remove(String isbn) {
-        for (int i = 0; i < size; i++) {
-            if (bookArray[i].isbn.equals(isbn)) {
-                for (int j = i; j < size - 1; j++) {
-                    bookArray[j] = bookArray[j + 1];
-                }
-                bookArray[size - 1] = null;
-                size--;
+    public E get ( int index ) {
+        if (index < 0 || index > nextIndex) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        return elements[index];
+    }
+
+    @Override
+    public E set ( int index, E element ) {
+        if (index < 0 || index > nextIndex) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        E oldElement = elements[index];
+        elements[index] = element;
+        return oldElement;
+    }
+
+    @Override
+    public E remove ( int index ) {
+        if (index < 0 || index > nextIndex) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        E oldElement = elements[index];
+
+        // shift elements to the left
+        for ( int i = index; i < nextIndex - 1; i++ ) {
+            elements[i] = elements[i + 1];
+        }
+
+        elements[nextIndex - 1] = null;
+        nextIndex--;
+
+        if (nextIndex < elements.length / 3) {
+            E[] largerElements = (E[]) new Object[elements.length / 2];
+
+            for ( int i = 0; i < nextIndex; i++ ) {
+                largerElements[i] = elements[i];
+            }
+
+            elements = largerElements;
+        }
+
+        return oldElement;
+    }
+
+    @Override
+    public int size () {
+        return nextIndex;
+    }
+
+    @Override
+    public int indexOf ( E element ) {
+
+        for ( int i = 0; i < nextIndex; i++ ) {
+            if (elements[i].equals(element)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public boolean contains ( E element ) {
+        for ( int i = 0; i < nextIndex; i++ ) {
+            if (elements[i].equals(element)) {
                 return true;
             }
         }
+
         return false;
     }
 
     @Override
-    public boolean contains(String isbn) {
-        for (int i = 0; i < size; i++) {
-            if (bookArray[i].isbn.equals(isbn)) {
-                return true;
-            }
+    public boolean isEmpty () {
+        if (nextIndex == 0) {
+            return true;
         }
+
         return false;
     }
 
     @Override
-    public int size() {
-        return size;
-    }
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        for ( int i = 0; i < nextIndex; i++ ) {
+            result.append(elements[i]);
 
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    // Optional: in toàn bộ danh sách sách
-    public void displayAllBooks() {
-        for (int i = 0; i < size; i++) {
-            bookArray[i].display();
+            if (i < nextIndex - 1) {
+                result.append(", ");
+            }
         }
+        result.append("]");
+        return result.toString();
     }
 }

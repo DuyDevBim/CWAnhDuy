@@ -1,35 +1,33 @@
 package CWAnhDuy;
 
+public class LinkedQueue<E> implements AbstractLinkedQueues<E> {
+    private class Node<E>{
+        // attributes
+        private E element;
+        private Node<E> next;
 
-
-public class LinkedQueue implements AbstractLinkedQueues<Order> {
-    public class Node {
-        // Attributes
-        Order order;
-        Node next;
-
-        // Constructor
-        public Node (Order order) {
-            this.order = order;
+        // constructor
+        public Node ( E element ) {
+            this.element = element;
             this.next = null;
         }
     }
 
-    // Attributes
-    private Node head;
-    private Node tail;
-    private int size;
+    // attributes
+    private Node<E> head; // Reference to the first node in the queue
+    private Node<E> tail; // Reference to the last node in the queue
+    private int size; // The current number of elements in the queue
 
-    // Constructor
-    public LinkedQueue() {
+    // constructor
+    public LinkedQueue (){
         this.head = null;
         this.tail = null;
         this.size = 0;
     }
 
     @Override
-    public void offer (Order order) {
-        Node newNode = new Node(order);
+    public void offer ( E element ) {
+        Node<E> newNode = new Node<>(element);
 
         // if the queue is empty
         if (head == null && tail == null) {
@@ -44,59 +42,64 @@ public class LinkedQueue implements AbstractLinkedQueues<Order> {
     }
 
     @Override
-    public Order poll() {
-        if (isEmpty()) {
-            System.out.println("Queue is empty");
-            return null;
+    public E poll() {
+        // if the queue is empty
+        if (head == null && tail == null) {
+            throw new IllegalStateException("Queue is empty");
         }
 
-        Order removeOrder = head.order;
-        head = head.next;
+        E oldElement = this.head.element;
 
-        if (head == null) {
-            tail = null;
+        if (head == tail){ // if the queue has only one element
+            this.head = null;
+            this.tail = null;
+        } else { // if the queue has more than one element
+            Node<E> tempNode = this.head;
+            this.head = this.head.next;
+            tempNode.next = null;
         }
 
         this.size--;
-        return removeOrder;
+        return oldElement;
     }
 
     @Override
-    public Order peek() {
-        if (isEmpty()) {
-            return  null;
+    public E peek() {
+        // if the queue is empty
+        if (head == null && tail == null) {
+            throw new IllegalStateException("Queue is empty");
         }
 
-        return head.order;
+        return this.head.element;
     }
 
     @Override
-    public int size() {
+    public int size () {
         return this.size;
     }
 
     @Override
-    public boolean isEmpty() {
-        return size == 0;
+    public boolean isEmpty () {
+        if (this.head == null && this.tail == null) {
+            return true;
+        }
+        return false;
     }
 
-    public Node getHead() {
-        return head;
-    }
-
-    public void displayAllOrders() {
-
-
-        if (isEmpty()) {
-            System.out.println("No order yet");
-            return;
+    @Override
+    public String toString () {
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        Node<E> tempNode = this.head;
+        while (tempNode != null) {
+            result.append(tempNode.element);
+            if (tempNode.next != null) {
+                result.append(", ");
+            }
+            tempNode = tempNode.next;
         }
 
-        System.out.println("All Orders in Queue:");
-        Node current = head;
-        while (current != null) {
-            current.order.displayOrderInformation();
-            current = current.next;
-        }
+        result.append("]");
+        return result.toString();
     }
 }
