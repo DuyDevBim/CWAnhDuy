@@ -7,6 +7,7 @@ public class BookStoreOnlineMenu {
     static ArrayList<Book> arrayList = new ArrayList<>();
     static LinkedQueue<Order> linkedQueue = new LinkedQueue<>();
     static LinkedStack<Order> undoStack = new LinkedStack<>();
+    static LinkedQueue<Order> shippedOrdersQueue = new LinkedQueue<>();
 
     private static void originalBooks() {
         arrayList.add(new Book("To Kill a Mockingbird", "Harper Lee", 10, 3, "B1"));
@@ -26,7 +27,8 @@ public class BookStoreOnlineMenu {
         System.out.println("6. Add Book");
         System.out.println("7. Remove Book");
         System.out.println("8. Undo last order");
-        System.out.println("9. Exit");
+        System.out.println("9. Tracking Order Processing");
+        System.out.println("10. Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -113,20 +115,14 @@ public class BookStoreOnlineMenu {
         System.out.println("==========================");
     }
 
-    private static void processOrder() {
+    private static void trackOrders() {
+        System.out.println("== Pending Orders ==");
         if (linkedQueue.isEmpty()) {
-            System.out.println(" No orders to process.");
+            System.out.println("No pending orders to display.");
+            System.out.println("==========================");
             return;
         }
 
-        Order order = linkedQueue.poll();
-        order.status = "Shipping";
-        System.out.println("Order processed successfully:");
-        order.displayOrderInformation();
-    }
-
-    private static void trackOrders() {
-        System.out.println("== All Orders ==");
         LinkedQueue<Order> tempQueue = new LinkedQueue<>();
         while (!linkedQueue.isEmpty()) {
             Order order = linkedQueue.poll();
@@ -137,6 +133,25 @@ public class BookStoreOnlineMenu {
         while(!tempQueue.isEmpty()){
             linkedQueue.offer(tempQueue.poll());
         }
+    }
+
+    private static void processOrder() {
+        if (linkedQueue.isEmpty()) {
+            System.out.println("No pending orders to process.");
+            return;
+        }
+
+        // Lấy (poll) đơn hàng đầu tiên ra khỏi hàng đợi đơn hàng chờ xử lý
+        Order orderToProcess = linkedQueue.poll();
+
+        // Thay đổi trạng thái của đơn hàng thành "Shipping"
+        orderToProcess.setStatus("Shipping");
+
+        // Thêm đơn hàng đã xử lý vào hàng đợi các đơn hàng đã được Shipping
+        shippedOrdersQueue.offer(orderToProcess);
+
+        System.out.println("Order ID " + orderToProcess.orderID + " has been processed and is now in Shipping status.");
+        System.out.println("==========================");
     }
 
     private static void searchOrder() {
@@ -259,6 +274,26 @@ public class BookStoreOnlineMenu {
         lastOrder.displayOrderInformation();
     }
 
+    private static void viewShippedOrders() {
+        System.out.println("== Shipped Orders ==");
+        if (shippedOrdersQueue.isEmpty()) {
+            System.out.println("No shipped orders to display.");
+            System.out.println("==========================");
+            return;
+        }
+
+        LinkedQueue<Order> tempQueue = new LinkedQueue<>();
+        while (!shippedOrdersQueue.isEmpty()) {
+            Order order = shippedOrdersQueue.poll();
+            order.displayOrderInformation();
+            System.out.println("==========================");
+            tempQueue.offer(order);
+        }
+        while (!tempQueue.isEmpty()) {
+            shippedOrdersQueue.offer(tempQueue.poll());
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         originalBooks();
@@ -299,6 +334,9 @@ public class BookStoreOnlineMenu {
                     undoLastOrder();
                     break;
                 case 9:
+                    viewShippedOrders();
+                    break;
+                case 10:
                     System.out.println("Exiting...");
                     scanner.close();
                     return;

@@ -7,7 +7,7 @@ public class Order {
     public Book[] books;
     public int[] quantities;
     public double totalPrice;
-    public String status = "Pending";
+    public String status;
 
     public Order(int orderID, String customerName, String address, Book[] books, int[] quantities, double totalPrice) {
         this.orderID = orderID;
@@ -16,6 +16,11 @@ public class Order {
         this.books = books;
         this.quantities = quantities;
         this.totalPrice = totalPrice;
+        this.status = "Pending";
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     private void selectionSortBookOrder() {
@@ -40,14 +45,6 @@ public class Order {
         }
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
     public void displayOrderInformation() {
         selectionSortBookOrder();
 
@@ -55,7 +52,6 @@ public class Order {
         System.out.println("Order ID: " + orderID );
         System.out.println("Customer Name: " + customerName);
         System.out.println("Address: " + address);
-        System.out.println("Status: " + status);
         System.out.println("Book Order: ");
 
         for (int i = 0; i < books.length; i++) {
@@ -65,5 +61,6 @@ public class Order {
         }
 
         System.out.println("Total price: " + totalPrice);
+        System.out.println("Status: " + status);
     }
 }
