@@ -115,7 +115,7 @@ public class BookStoreOnlineMenu {
 
     private static void processOrder() {
         if (linkedQueue.isEmpty()) {
-            System.out.println("📭 No orders to process.");
+            System.out.println(" No orders to process.");
             return;
         }
 
