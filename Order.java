@@ -55,8 +55,8 @@ public class Order {
         System.out.println("Order ID: " + orderID );
         System.out.println("Customer Name: " + customerName);
         System.out.println("Address: " + address);
-        System.out.println("Book Order: ");
         System.out.println("Status: " + status);
+        System.out.println("Book Order: ");
 
         for (int i = 0; i < books.length; i++) {
             if (books[i] != null) {
