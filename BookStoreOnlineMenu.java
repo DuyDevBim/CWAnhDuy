@@ -9,11 +9,11 @@ public class BookStoreOnlineMenu {
     static LinkedStack<Order> undoStack = new LinkedStack<>();
 
     private static void originalBooks() {
-        arrayList.add(new Book("To Kill a Mockingbird", "Harper Lee", 10, 3, "TKAM"));
-        arrayList.add(new Book("Brave New World", "Aldous Huxley", 15, 5, "BNW"));
-        arrayList.add(new Book("Pride and Prejudice", "Jane Austen", 8, 2, "PAP"));
-        arrayList.add(new Book("The Alchemist", "Paulo Coelho", 12, 7, "TA"));
-        arrayList.add(new Book("The Catcher in the Rye", "J.D. Salinger", 7, 6, "TCITR"));
+        arrayList.add(new Book("To Kill a Mockingbird", "Harper Lee", 10, 3, "B1"));
+        arrayList.add(new Book("Brave New World", "Aldous Huxley", 15, 5, "B2"));
+        arrayList.add(new Book("Pride and Prejudice", "Jane Austen", 8, 2, "B3"));
+        arrayList.add(new Book("The Alchemist", "Paulo Coelho", 12, 7, "B4"));
+        arrayList.add(new Book("The Catcher in the Rye", "J.D. Salinger", 7, 6, "B5"));
     }
 
     private static void displayMenu() {
