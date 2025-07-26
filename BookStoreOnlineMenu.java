@@ -129,49 +129,46 @@ public class BookStoreOnlineMenu {
 
     private static void searchOrder() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Search By:\n1. Order ID\n2. Name\n3. Address\n4. ISBN");
+        System.out.println("Search By: \n1. Order ID\n2. Name\n3. Address\n4. ISBN");
         int choice = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Enter your search keyword: ");
-        String keyword = scanner.nextLine().trim();
-
+        System.out.print(" Enter your search keyword: ");
+        String keyword = scanner.nextLine();
         boolean found = false;
-        LinkedQueue<Order> tempQueue = new LinkedQueue<>();
 
+        LinkedQueue<Order> tempQueue = new LinkedQueue<>();
         while (!linkedQueue.isEmpty()) {
             Order order = linkedQueue.poll();
-            boolean match = false;
-
-            if (choice == 1 && String.valueOf(order.orderID).equals(keyword)) match = true;
-            if (choice == 2 && order.customerName.equalsIgnoreCase(keyword)) match = true;
-            if (choice == 3 && order.address.equalsIgnoreCase(keyword)) match = true;
-            if (choice == 4) {
-                for (Book b : order.books) {
-                    if (b != null && b.isbn.equalsIgnoreCase(keyword)) {
-                        match = true;
-                        break;
+            boolean isMatch = false;
+            switch (choice) {
+                case 1:
+                    if (String.valueOf(order.orderID).equals(keyword)) isMatch = true;
+                    break;
+                case 2:
+                    if (order.customerName.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
+                case 3:
+                    if (order.address.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
+                case 4:
+                    for (Book book : order.books) {
+                        if (book != null && book.isbn.equalsIgnoreCase(keyword)) {
+                            isMatch = true;
+                            break;
+                        }
                     }
-                }
+                    break;
             }
-
-            if (match) {
+            if(isMatch){
                 order.displayOrderInformation();
                 found = true;
             }
-
             tempQueue.offer(order);
         }
-
-
-        while (!tempQueue.isEmpty()) {
+        while(!tempQueue.isEmpty()){
             linkedQueue.offer(tempQueue.poll());
         }
-
-        if (!found) {
-            System.out.println("❌ No matching order found.");
-        }
+        if (!found) System.out.println("No matching order found.");
     }
-
 
     private static void addBook() {
         Scanner scanner = new Scanner(System.in);
