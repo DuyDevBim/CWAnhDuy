@@ -19,13 +19,14 @@ public class BookStoreOnlineMenu {
     private static void displayMenu() {
         System.out.println("\nWelcome to Bookstore Online");
         System.out.println("1. Available Books");
-        System.out.println("2. Place order books");
-        System.out.println("3. Order tracking");
-        System.out.println("4. Searching order");
-        System.out.println("5. Add Book");
-        System.out.println("6. Remove Book");
-        System.out.println("7. Undo last order");
-        System.out.println("8. Exit");
+        System.out.println("2. Process Order");
+        System.out.println("3. Place order books");
+        System.out.println("4. Order tracking");
+        System.out.println("5. Searching order");
+        System.out.println("6. Add Book");
+        System.out.println("7. Remove Book");
+        System.out.println("8. Undo last order");
+        System.out.println("9. Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -112,6 +113,17 @@ public class BookStoreOnlineMenu {
         System.out.println("==========================");
     }
 
+    private static void processOrder() {
+        if (linkedQueue.isEmpty()) {
+            System.out.println("📭 No orders to process.");
+            return;
+        }
+
+        Order order = linkedQueue.poll();
+        order.status = "Shipping";
+        System.out.println("Order processed successfully:");
+        order.displayOrderInformation();
+    }
 
     private static void trackOrders() {
         System.out.println("== All Orders ==");
@@ -269,21 +281,24 @@ public class BookStoreOnlineMenu {
                     placeOrder();
                     break;
                 case 3:
-                    trackOrders();
+                    processOrder();
                     break;
                 case 4:
-                    searchOrder();
+                    trackOrders();
                     break;
                 case 5:
-                    addBook();
+                    searchOrder();
                     break;
                 case 6:
-                    removeBook();
+                    addBook();
                     break;
                 case 7:
-                    undoLastOrder();
+                    removeBook();
                     break;
                 case 8:
+                    undoLastOrder();
+                    break;
+                case 9:
                     System.out.println("Exiting...");
                     scanner.close();
                     return;

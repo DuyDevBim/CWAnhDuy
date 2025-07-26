@@ -7,6 +7,7 @@ public class Order {
     public Book[] books;
     public int[] quantities;
     public double totalPrice;
+    public String status = "Pending";
 
     public Order(int orderID, String customerName, String address, Book[] books, int[] quantities, double totalPrice) {
         this.orderID = orderID;
@@ -39,6 +40,14 @@ public class Order {
         }
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public void displayOrderInformation() {
         selectionSortBookOrder();
 
@@ -47,6 +56,7 @@ public class Order {
         System.out.println("Customer Name: " + customerName);
         System.out.println("Address: " + address);
         System.out.println("Book Order: ");
+        System.out.println("Status: " + status);
 
         for (int i = 0; i < books.length; i++) {
             if (books[i] != null) {
