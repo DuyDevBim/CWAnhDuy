@@ -105,7 +105,7 @@ public class BookStoreOnlineMenu {
             finalQuantities[i] = quantities[i];
         }
 
-        int orderID = linkedQueue.size() + 1;
+        int orderID = linkedQueue.size() + shippedOrdersQueue.size() + 1;
         Order order = new Order(orderID, customerName, address, finalBooks, finalQuantities, totalPrice);
         linkedQueue.offer(order);
         undoStack.push(order);
@@ -116,7 +116,7 @@ public class BookStoreOnlineMenu {
     }
 
     private static void trackOrders() {
-        System.out.println("== Pending Orders ==");
+        System.out.println("== Orders ==");
         if (linkedQueue.isEmpty()) {
             System.out.println("No pending orders to display.");
             System.out.println("==========================");
@@ -141,13 +141,10 @@ public class BookStoreOnlineMenu {
             return;
         }
 
-        // Lấy (poll) đơn hàng đầu tiên ra khỏi hàng đợi đơn hàng chờ xử lý
         Order orderToProcess = linkedQueue.poll();
 
-        // Thay đổi trạng thái của đơn hàng thành "Shipping"
         orderToProcess.setStatus("Shipping");
 
-        // Thêm đơn hàng đã xử lý vào hàng đợi các đơn hàng đã được Shipping
         shippedOrdersQueue.offer(orderToProcess);
 
         System.out.println("Order ID " + orderToProcess.orderID + " has been processed and is now in Shipping status.");
@@ -156,13 +153,14 @@ public class BookStoreOnlineMenu {
 
     private static void searchOrder() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Search By: \n1. Order ID\n2. Name\n3. Address\n4. ISBN");
+        System.out.println("Search By: \n1. Order ID\n2. Name\n3. Address\n4. ISBN\n5. Status"); // Thêm tìm kiếm theo Status
         int choice = Integer.parseInt(scanner.nextLine());
         System.out.print(" Enter your search keyword: ");
         String keyword = scanner.nextLine();
         boolean found = false;
 
-        LinkedQueue<Order> tempQueue = new LinkedQueue<>();
+        // Tìm kiếm trong linkedQueue (Pending Orders)
+        LinkedQueue<Order> tempQueuePending = new LinkedQueue<>();
         while (!linkedQueue.isEmpty()) {
             Order order = linkedQueue.poll();
             boolean isMatch = false;
@@ -184,16 +182,56 @@ public class BookStoreOnlineMenu {
                         }
                     }
                     break;
+                case 5:
+                    if (order.status.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
             }
             if(isMatch){
                 order.displayOrderInformation();
                 found = true;
             }
-            tempQueue.offer(order);
+            tempQueuePending.offer(order);
         }
-        while(!tempQueue.isEmpty()){
-            linkedQueue.offer(tempQueue.poll());
+        while(!tempQueuePending.isEmpty()){
+            linkedQueue.offer(tempQueuePending.poll());
         }
+
+        LinkedQueue<Order> tempQueueShipped = new LinkedQueue<>();
+        while (!shippedOrdersQueue.isEmpty()) {
+            Order order = shippedOrdersQueue.poll();
+            boolean isMatch = false;
+            switch (choice) {
+                case 1:
+                    if (String.valueOf(order.orderID).equals(keyword)) isMatch = true;
+                    break;
+                case 2:
+                    if (order.customerName.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
+                case 3:
+                    if (order.address.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
+                case 4:
+                    for (Book book : order.books) {
+                        if (book != null && book.isbn.equalsIgnoreCase(keyword)) {
+                            isMatch = true;
+                            break;
+                        }
+                    }
+                    break;
+                case 5:
+                    if (order.status.equalsIgnoreCase(keyword)) isMatch = true;
+                    break;
+            }
+            if(isMatch){
+                order.displayOrderInformation();
+                found = true;
+            }
+            tempQueueShipped.offer(order);
+        }
+        while(!tempQueueShipped.isEmpty()){
+            shippedOrdersQueue.offer(tempQueueShipped.poll());
+        }
+
         if (!found) System.out.println("No matching order found.");
     }
 
