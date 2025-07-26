@@ -153,13 +153,12 @@ public class BookStoreOnlineMenu {
 
     private static void searchOrder() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Search By: \n1. Order ID\n2. Name\n3. Address\n4. ISBN\n5. Status"); // Thêm tìm kiếm theo Status
+        System.out.println("Search By: \n1. Order ID\n2. Name\n3. Address\n4. ISBN\n5. Status");
         int choice = Integer.parseInt(scanner.nextLine());
         System.out.print(" Enter your search keyword: ");
         String keyword = scanner.nextLine();
         boolean found = false;
 
-        // Tìm kiếm trong linkedQueue (Pending Orders)
         LinkedQueue<Order> tempQueuePending = new LinkedQueue<>();
         while (!linkedQueue.isEmpty()) {
             Order order = linkedQueue.poll();
