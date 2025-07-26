@@ -19,9 +19,9 @@ public class BookStoreOnlineMenu {
     private static void displayMenu() {
         System.out.println("\nWelcome to Bookstore Online");
         System.out.println("1. Available Books");
-        System.out.println("2. Process Order");
-        System.out.println("3. Place order books");
-        System.out.println("4. Order tracking");
+        System.out.println("2. Place order books");
+        System.out.println("3. Order tracking");
+        System.out.println("4. Process Order");
         System.out.println("5. Searching order");
         System.out.println("6. Add Book");
         System.out.println("7. Remove Book");
@@ -281,10 +281,10 @@ public class BookStoreOnlineMenu {
                     placeOrder();
                     break;
                 case 3:
-                    processOrder();
+                    trackOrders();
                     break;
                 case 4:
-                    trackOrders();
+                    processOrder();
                     break;
                 case 5:
                     searchOrder();
